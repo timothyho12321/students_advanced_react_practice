@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import AddStudent from './AddStudent';
+import StudentContext from './StudentContext';
+import StudentList from './StudentList';
 
 
 function App() {
@@ -21,7 +24,7 @@ function App() {
     {
       id: 3,
       student_number: "ABC003",
-      year_of_study:3,
+      year_of_study: 3,
       gender: "m",
       graduated: "true"
     },
@@ -34,12 +37,41 @@ function App() {
     }
   ])
 
+  const context = {
+    getStudents: () => {
+      return students;
+
+    },
+
+    addStudent: (newStudent) => {
+      setStudents([...students,
+        newStudent])
+
+
+    },
+
+    deleteStudent: (number) => {
+
+      console.log("student number", number)
+      // console.log(students);
+      let indexToDelete = students.findIndex(s => s.student_number === number)
+      // console.log(indexToDelete);
+      setStudents([...students.slice(0, indexToDelete), ...students.slice(indexToDelete + 1)])
+
+    }
+
+  }
 
 
   return (
     <React.Fragment>
 
+      <StudentContext.Provider value={context}>
+        <StudentList />
 
+        <AddStudent />
+
+      </StudentContext.Provider>
 
     </React.Fragment>
   );
